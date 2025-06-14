@@ -1,48 +1,94 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchBooks, sortBooks } from './booksSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchBooks, setSortBy, setOrder } from './booksSlice';
 
-const BookList = () => {
+const sortOptions = [
+  { value: 'title', label: 'Title' },
+  { value: 'author', label: 'Author' },
+  { value: 'publisher', label: 'Publisher' }
+];
+
+const orderOptions = [
+  { value: 'asc', label: 'Ascending' },
+  { value: 'desc', label: 'Descending' }
+];
+
+function getSortedBooks(books, sortBy, order) {
+  const sorted = [...books].sort((a, b) => {
+    const aVal = a[sortBy].toLowerCase();
+    const bVal = b[sortBy].toLowerCase();
+    if (aVal < bVal) return order === 'asc' ? -1 : 1;
+    if (aVal > bVal) return order === 'asc' ? 1 : -1;
+    return 0;
+  });
+  return sorted;
+}
+
+const BooksList = () => {
   const dispatch = useDispatch();
-  const { items, status, error, sortBy } = useSelector(state => state.books);
+  const { items, status, error, sortBy, order } = useSelector(state => state.books);
 
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchBooks());
     }
-  }, [status, dispatch]);
+  }, [dispatch, status]);
 
-  const handleSort = (criteria) => {
-    dispatch(sortBooks(criteria));
+  const handleSortByChange = (e) => {
+    dispatch(setSortBy(e.target.value));
   };
 
-  if (status === 'loading') {
-    return <div className="loading">Loading books...</div>;
-  }
+  const handleOrderChange = (e) => {
+    dispatch(setOrder(e.target.value));
+  };
 
-  if (status === 'failed') {
-    return <div className="error">Error: {error}</div>;
-  }
+  const sortedBooks = getSortedBooks(items, sortBy, order);
 
   return (
-    <div className="book-list-container">
-      <div className="sort-controls">
-        <h3>Sort Books By:</h3>
-        <button className={sortBy === 'title' ? 'active' : ''} onClick={() => handleSort('title')}>Title</button>
-        <button className={sortBy === 'author' ? 'active' : ''} onClick={() => handleSort('author')}>Author</button>
-        <button className={sortBy === 'publisher' ? 'active' : ''} onClick={() => handleSort('publisher')}>Publisher</button>
+    <div>
+      <h1>Books List</h1>
+
+      <div style={{ marginBottom: '20px', display: 'flex', gap: '20px', alignItems: 'center' }}>
+        <label htmlFor="sortBy">Sort By:</label>
+        <select id="sortBy" value={sortBy} onChange={handleSortByChange}>
+          {sortOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+
+        <label htmlFor="order">Order:</label>
+        <select id="order" value={order} onChange={handleOrderChange}>
+          {orderOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
       </div>
-      <div className="books-grid">
-        {items.map(book => (
-          <div key={book.id} className="book-item">
-            <h3 className="book-title">{book.title}</h3>
-            <p className="book-author"><strong>Author:</strong> {book.author}</p>
-            <p className="book-publisher"><strong>Publisher:</strong> {book.publisher}</p>
-          </div>
-        ))}
-      </div>
+
+      {status === 'loading' && <div>Loading...</div>}
+      {status === 'failed' && <div>Error: {error}</div>}
+
+      {status === 'succeeded' && (
+        <table border="1" cellPadding="8" style={{ borderCollapse: 'collapse', width: '100%' }}>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Publisher</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedBooks.map(book => (
+              <tr key={book.id}>
+                <td>{book.title}</td>
+                <td>{book.author}</td>
+                <td>{book.publisher}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
 
-export default BookList;
+export default BooksList;

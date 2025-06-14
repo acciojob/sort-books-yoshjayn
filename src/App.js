@@ -8,10 +8,7 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <header className="App-header">
-          <h1>Book Sorting Application</h1>
-          <p>Sort your books by title, author, or publisher</p>
-        </header>
+        
         <main>
           <BookList />
         </main>

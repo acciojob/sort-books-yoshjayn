@@ -1,42 +1,34 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Example async thunk to fetch books (replace the URL with your real API)
-export const fetchBooks = createAsyncThunk(
-  'books/fetchBooks',
-  async () => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-    const data = await response.json();
-    // Transforming data to fit book structure for demo
-    return data.slice(0, 10).map(item => ({
-      id: item.id,
-      title: item.title,
-      author: `Author ${item.userId}`,
-      publisher: `Publisher ${item.id % 3 + 1}`
-    }));
-  }
-);
+// Simulate API call (replace with real API if available)
+export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
+  // Example static data for demonstration
+  // Replace this with your real fetch if needed
+  return [
+    { id: 1, title: 'C Programming', author: 'Dennis Ritchie', publisher: 'Prentice Hall' },
+    { id: 2, title: 'The Pragmatic Programmer', author: 'Andy Hunt', publisher: 'Addison-Wesley' },
+    { id: 3, title: 'Clean Code', author: 'Robert C. Martin', publisher: 'Prentice Hall' },
+    { id: 4, title: 'JavaScript: The Good Parts', author: 'Douglas Crockford', publisher: "O'Reilly Media" }
+  ];
+});
+
+const initialState = {
+  items: [],
+  status: 'idle',
+  error: null,
+  sortBy: 'title',
+  order: 'asc'
+};
 
 const booksSlice = createSlice({
   name: 'books',
-  initialState: {
-    items: [],
-    status: 'idle',
-    error: null,
-    sortBy: 'title'
-  },
+  initialState,
   reducers: {
-    sortBooks: (state, action) => {
+    setSortBy: (state, action) => {
       state.sortBy = action.payload;
-      state.items.sort((a, b) => {
-        switch (action.payload) {
-          case 'author':
-            return a.author.localeCompare(b.author);
-          case 'publisher':
-            return a.publisher.localeCompare(b.publisher);
-          default:
-            return a.title.localeCompare(b.title);
-        }
-      });
+    },
+    setOrder: (state, action) => {
+      state.order = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -55,5 +47,5 @@ const booksSlice = createSlice({
   }
 });
 
-export const { sortBooks } = booksSlice.actions;
+export const { setSortBy, setOrder } = booksSlice.actions;
 export default booksSlice.reducer;
