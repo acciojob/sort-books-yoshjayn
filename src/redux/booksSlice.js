@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // Fixed mock data with exactly 4 books
 export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
+  // Return EXACTLY 4 books with unique IDs
   return [
     { id: 1, title: 'C Programming', author: 'Dennis Ritchie', publisher: 'Prentice Hall' },
     { id: 2, title: 'The Pragmatic Programmer', author: 'Andy Hunt', publisher: 'Addison-Wesley' },
@@ -27,10 +28,18 @@ const booksSlice = createSlice({
       state.order = action.payload;
     }
   },
-  extraReducers: (builder) => {
+ extraReducers: (builder) => {
     builder
+      .addCase(fetchBooks.pending, (state) => {
+        state.status = 'loading'; // when fetch starts
+      })
       .addCase(fetchBooks.fulfilled, (state, action) => {
+        state.status = 'succeeded'; // when fetch succeeds
         state.items = action.payload;
+      })
+      .addCase(fetchBooks.rejected, (state, action) => {
+        state.status = 'failed'; // when fetch fails
+        state.error = action.error.message;
       });
   }
 });

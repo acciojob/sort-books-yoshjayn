@@ -4,7 +4,7 @@ import { fetchBooks, setSortBy, setOrder } from './booksSlice';
 
 const BooksList = () => {
   const dispatch = useDispatch();
-  const { items, status, error, sortBy, order } = useSelector(state => state.books);
+  const { items, status, sortBy, order } = useSelector(state => state.books);
 
   useEffect(() => {
     dispatch(fetchBooks());
@@ -52,24 +52,27 @@ const BooksList = () => {
       </div>
 
       {/* Table with explicit 4 books */}
-      <table data-testid="book-table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Publisher</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedBooks.map(book => (
-            <tr key={book.id} data-testid="book-row">
-              <td>{book.title}</td>
-              <td>{book.author}</td>
-              <td>{book.publisher}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {status === 'succeeded' && (
+  <table data-testid="book-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Publisher</th>
+      </tr>
+    </thead>
+    <tbody>
+      {sortedBooks.map(book => (
+        <tr key={book.id} data-testid="book-row">
+          <td>{book.title}</td>
+          <td>{book.author}</td>
+          <td>{book.publisher}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
+
     </div>
   );
 };
