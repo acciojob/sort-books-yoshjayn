@@ -1,23 +1,24 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f7f7f7;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  text-align: center;
-  margin-top: 30px;
-  color: #333;
-}
-
 table {
-  margin: 0 auto;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
 th {
-  background: #f0f0f0;
-  color: #444;
+  background-color: #f2f2f2;
+}
+
+label {
+  margin-right: 10px;
+  margin-left: 20px;
+}
+
+select {
+  padding: 5px;
 }
