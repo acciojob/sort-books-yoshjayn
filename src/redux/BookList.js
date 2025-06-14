@@ -7,51 +7,52 @@ const BooksList = () => {
   const { items, status, error, sortBy, order } = useSelector(state => state.books);
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchBooks());
-    }
-  }, [dispatch, status]);
+    dispatch(fetchBooks());
+  }, [dispatch]);
 
   // Sorting logic
   const sortedBooks = [...items].sort((a, b) => {
     const aVal = a[sortBy].toLowerCase();
     const bVal = b[sortBy].toLowerCase();
-    if (order === 'asc') return aVal.localeCompare(bVal);
-    return bVal.localeCompare(aVal);
+    return order === 'asc' 
+      ? aVal.localeCompare(bVal)
+      : bVal.localeCompare(aVal);
   });
 
   return (
     <div>
       <h1>Books List</h1>
       
-      {/* Sort Controls - Fixed labels and structure */}
+      {/* Sort Controls - Fixed structure for test selectors */}
       <div>
-        <label htmlFor="sort-by">Sort by:</label>
-        <select 
-          id="sort-by" 
-          value={sortBy} 
-          onChange={(e) => dispatch(setSortBy(e.target.value))}
-          data-testid="sort-by"
-        >
-          <option value="title">Title</option>
-          <option value="author">Author</option>
-          <option value="publisher">Publisher</option>
-        </select>
+        <div>
+          <label>Sort by:</label>
+          <select 
+            value={sortBy} 
+            onChange={(e) => dispatch(setSortBy(e.target.value))}
+            data-testid="sort-by-dropdown"
+          >
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="publisher">Publisher</option>
+          </select>
+        </div>
 
-        <label htmlFor="order">Order:</label>
-        <select 
-          id="order" 
-          value={order} 
-          onChange={(e) => dispatch(setOrder(e.target.value))}
-          data-testid="order"
-        >
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
+        <div>
+          <label>Order:</label>
+          <select 
+            value={order} 
+            onChange={(e) => dispatch(setOrder(e.target.value))}
+            data-testid="order-dropdown"
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
       </div>
 
-      {/* Table with 4 books - Fixed structure */}
-      <table>
+      {/* Table with explicit 4 books */}
+      <table data-testid="book-table">
         <thead>
           <tr>
             <th>Title</th>
@@ -61,7 +62,7 @@ const BooksList = () => {
         </thead>
         <tbody>
           {sortedBooks.map(book => (
-            <tr key={book.id}>
+            <tr key={book.id} data-testid="book-row">
               <td>{book.title}</td>
               <td>{book.author}</td>
               <td>{book.publisher}</td>
