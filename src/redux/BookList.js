@@ -64,6 +64,7 @@ const BooksList = () => {
     <tbody>
       {sortedBooks.map(book => (
         <tr key={book.id} data-testid="book-row">
+            <td>{book.id}</td>
           <td>{book.title}</td>
           <td>{book.author}</td>
           <td>{book.publisher}</td>
