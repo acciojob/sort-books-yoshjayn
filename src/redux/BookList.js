@@ -56,8 +56,8 @@ const BooksList = () => {
   <table data-testid="book-table">
     <thead>
       <tr>
-        <th>Id</th>
         <th>Title</th>
+        <th>Id</th>
         <th>Author</th>
         <th>Publisher</th>
       </tr>
@@ -65,8 +65,8 @@ const BooksList = () => {
     <tbody>
       {sortedBooks.map(book => (
         <tr key={book.id} data-testid="book-row">
-            <td>{book.id}</td>
           <td>{book.title}</td>
+            <td>{book.id}</td>
           <td>{book.author}</td>
           <td>{book.publisher}</td>
         </tr>
