@@ -56,6 +56,7 @@ const BooksList = () => {
   <table data-testid="book-table">
     <thead>
       <tr>
+        <th>Id</th>
         <th>Title</th>
         <th>Author</th>
         <th>Publisher</th>
