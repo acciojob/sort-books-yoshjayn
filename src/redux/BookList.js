@@ -59,7 +59,7 @@ const BooksList = () => {
         <th>Title</th>
         <th>Author</th>
         <th>Publisher</th>
-        <th>Id</th>
+        <th>ISBN</th>
       </tr>
     </thead>
     <tbody>
