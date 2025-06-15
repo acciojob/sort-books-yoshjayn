@@ -7,7 +7,8 @@ export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
     { id: 1, title: 'C Programming', author: 'Dennis Ritchie', publisher: 'Prentice Hall' },
     { id: 2, title: 'The Pragmatic Programmer', author: 'Andy Hunt', publisher: 'Addison-Wesley' },
     { id: 3, title: 'Clean Code', author: 'Robert C. Martin', publisher: 'Prentice Hall' },
-    { id: 4, title: 'JavaScript: The Good Parts', author: 'Douglas Crockford', publisher: "O'Reilly Media" }
+    { id: 4, title: 'JavaScript: The Good Parts', author: 'Douglas Crockford', publisher: "O'Reilly Media" },
+    { id: 5, title: 'C Programming', author: 'Dennis Ritchie', publisher: 'Prentice Hall' },
   ];
 });
 
